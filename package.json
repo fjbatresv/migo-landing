@@ -1,0 +1,23 @@
+{
+  "name": "migo-landing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run check:sanitized && node tools/generate-og.mjs && astro build && npm run check:sanitized -- dist && npm run check:seo",
+    "preview": "astro preview",
+    "test": "playwright test",
+    "check:sanitized": "node tools/check-sanitized.mjs",
+    "check:seo": "node tools/check-seo.mjs dist"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^7.4.13"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.65.1",
+    "sharp": "^0.35.5"
+  }
+}

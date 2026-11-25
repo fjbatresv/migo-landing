@@ -1,0 +1,21 @@
+---
+const { copy } = Astro.props;
+---
+<section class="section architecture" id="architecture">
+  <div class="section-head"><p class="eyebrow">{copy.eyebrows[2]}</p><h2>{copy.architectureTitle}</h2><p>{copy.architectureIntro}</p></div>
+  <div class="diagram-wrap" data-view="diagram">
+    <div class="diagram-controls" aria-label={copy.diagramControls}><button type="button" data-view-button="diagram" aria-pressed="true">{copy.diagram}</button><button type="button" data-view-button="list" aria-pressed="false">{copy.list}</button></div>
+    <div class="diagram-visual" aria-label={copy.diagramAria}>
+      <div class="arch-column"><b>{copy.diagramGroups[0]}</b>{copy.diagramChannels.map((text: string, i: number) => <span data-node={i === 0 ? 'checkout' : undefined}>{text}</span>)}</div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="arch-column"><b>{copy.diagramGroups[1]}</b>{copy.diagramEdge.map((text: string, i: number) => <span data-node={i === 1 ? 'authorizer' : undefined}>{text}</span>)}</div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="arch-column core"><b>{copy.diagramGroups[2]}</b>{copy.diagramBackend.map((text: string, i: number) => <span data-node={i === 0 ? 'middleware' : undefined}>{text}</span>)}</div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="arch-column"><b>{copy.diagramGroups[3]}</b>{copy.diagramPayments.map((text: string, i: number) => <span data-node={i === 0 ? 'processor' : undefined}>{text}</span>)}</div>
+    </div>
+    <div class="arch-bottom">{copy.diagramBottom.map((text: string, i: number) => <span data-node={i === 0 ? 'webhook' : i === 1 ? 'voucher' : undefined}>{text}</span>)}</div>
+    <div class="diagram-list"><ul>{copy.diagramList.map((text: string) => <li>{text}</li>)}</ul></div>
+  </div>
+  <h3 class="stack-heading">{copy.stack}</h3><div class="stack-list">{copy.layers.map(([name, value]: [string,string]) => <p><b>{name}</b><span>{value}</span></p>)}</div>
+</section>
