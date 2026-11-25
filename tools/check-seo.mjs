@@ -10,7 +10,7 @@ let sectionIds=[];
 for(const [file,lang] of pages){
   const html=await read(file); const title=html.match(/<title>(.*?)<\/title>/s)?.[1]??''; const desc=html.match(/<meta name="description" content="(.*?)"/s)?.[1]??'';
   must(title.length>0&&title.length<=60,`${file}: title missing/over 60 (${title.length})`);must(desc.length>=70&&desc.length<=160,`${file}: description length ${desc.length}`);
-  must(html.includes('rel="canonical" href="https://'),`${file}: canonical missing/relative`);must(/<link rel="preload"[^>]+as="font"/.test(html),`${file}: critical font preload missing`);must(['en','es','x-default'].every(l=>html.includes(`hreflang="${l}"`)),`${file}: hreflang incomplete`);
+  must(html.includes('rel="canonical" href="https://'),`${file}: canonical missing/relative`);must((html.match(/<link rel="preload"[^>]+as="font"/g)||[]).length>=4,`${file}: display/body font preloads missing`);must(['en','es','x-default'].every(l=>html.includes(`hreflang="${l}"`)),`${file}: hreflang incomplete`);
   must((html.match(/<h1\b/g)||[]).length===1,`${file}: expected one h1`);must(html.includes('application/ld+json')&&html.includes('TechArticle')&&html.includes('BreadcrumbList'),`${file}: JSON-LD incomplete`);
   const levels=[...html.matchAll(/<h([1-6])\b/g)].map(m=>Number(m[1]));must(levels.every((n,i)=>i===0||n<=levels[i-1]+1),`${file}: heading level skipped`);
   const imgs=[...html.matchAll(/<img\b[^>]*>/g)].map(m=>m[0]);must(imgs.every(i=>/\balt=/.test(i)&&/\bwidth=/.test(i)&&/\bheight=/.test(i)),`${file}: img missing alt/size`);
